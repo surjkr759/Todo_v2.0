@@ -9,7 +9,7 @@
     },
     reducers: {
         addToDo: (state, action) => {
-            state.todoLists[0].push(action.payload)
+            state.todoLists[state.currentIndex].push(action.payload)
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
@@ -23,6 +23,21 @@
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
+        addTodoTitle: (state, action) => {
+            state.todoTitle.push(action.payload)
+            localStorage.setItem('todos', JSON.stringify(state))
+            return state;
+        },
+        editTodoTitle: (state, action) => {
+            state.todoTitle.splice(state.currentIndex, 1, action.payload)
+            localStorage.setItem('todos', JSON.stringify(state))
+            return state;
+        },
+        editTodoItems: (state, action) => {
+            state.todoLists[state.currentIndex][action.payload.ind].text = action.payload.val
+            localStorage.setItem('todos', JSON.stringify(state))
+            return state;
+        }
         // resetTodo: (state) => {
         //     state.length = 0;
         //     localStorage.setItem('todos', JSON.stringify(state))
@@ -34,5 +49,5 @@
     }
   })
 
-  export const { addToDo, handleCheckTodo, deleteTodo, resetTodo } = todoSlice.actions 
+  export const { addToDo, handleCheckTodo, deleteTodo, resetTodo, addTodoTitle, editTodoTitle, editTodoItems } = todoSlice.actions 
   export default todoSlice.reducer

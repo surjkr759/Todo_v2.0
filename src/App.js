@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToDo, handleCheckTodo, deleteTodo, resetTodo } from './store/slice/todoSlice';
+import { addToDo, handleCheckTodo, deleteTodo, resetTodo, addTodoTitle, editTodoTitle, editTodoItems } from './store/slice/todoSlice';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,6 +15,7 @@ function App() {
   const todos = useSelector(store => store.todos)
   const inputRef = useRef(null)
   const editTitleRef = useRef(null)
+  const editTasksRef = useRef([])
 
   const [todo, setTodo] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -23,8 +24,10 @@ function App() {
   const [hurrayMessage, setHurrayMessage] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const [title, setTitle] = useState('Todo App');
-  const [titleEdit, setTitleEdit] = useState('false');
-  const [todoItemEdit, setTodoItemEdit] = useState('false');
+  const [titleEdit, setTitleEdit] = useState(false);
+  const [todoItemEdit, setTodoItemEdit] = useState(false);
+  const [todoItem, setTodoItem] = useState('');
+  const [indexVal, setIndexVal] = useState(null);
   
   useEffect(() => {
     inputRef.current?.focus();
@@ -40,6 +43,12 @@ function App() {
     }
 
   }, [todos])
+
+  useEffect(() => {
+    if(todos.todoTitle.length < todos.currentIndex)
+      dispatch(addTodoTitle(title))
+    setTitle(todos.todoTitle[todos.currentIndex])
+  }, [todos.currentIndex])
 
   useEffect(() => {
     editTitleRef.current?.focus()
@@ -71,9 +80,26 @@ function App() {
   }, [todo])
 
   const handleEditTodo = useCallback((e, index) => {
-    // console.log('Event', e)
-    // console.log('Index', index)
-  })
+    if(!todoItemEdit) {
+      setIndexVal(index)
+      setTodoItem(todos.todoLists[todos.currentIndex][index].text)
+      setTodoItemEdit(true)
+      // console.log('todoItemEdit', todoItemEdit)
+      // console.log('Index', editTasksRef.current[index])
+      setTimeout(() => {
+        editTasksRef.current[index].focus()
+      }, 0)
+      
+    } else alert('Please save one todo item before editing another')
+  }, [todoItem, todoItemEdit])
+
+  const handleDoneTodo = useCallback((index) => {
+    dispatch(editTodoItems({ind: index, val: todoItem}))
+    setTodoItemEdit(false)
+    setIndexVal(null)
+    setTodoItem('')
+  }, [todoItem, todoItemEdit])
+
 
   const reset = useCallback(() => {
     setHurrayMessage('')
@@ -81,13 +107,18 @@ function App() {
     dispatch(resetTodo())
   }, [todos])
 
+  const handleDoneTodoTitle = useCallback(() => {
+    dispatch(editTodoTitle(title))
+    setTitleEdit(false)
+  }, [dispatch, title])
+
 
   return (
     <div className="App">
       {titleEdit === true ? 
         <div>
           <input className='title' type='text' value={title} ref={editTitleRef} onChange={e => setTitle(e.target.value)} />
-          <MdDone style={{width: '25px', height: '25px'}} onClick={e => setTitleEdit(false)}/>
+          <MdDone style={{width: '25px', height: '25px'}} onClick={handleDoneTodoTitle}/>
         </div> :
         <div>
           <input className='title' type='text' value={title} disabled/> 
@@ -104,33 +135,30 @@ function App() {
         <div id='todoContainer'>
           <ul>
             {todos.todoLists[todos.currentIndex].map((toDo, index) => 
-              <li key={toDo.id} style={{textDecoration: toDo.isCompleted ? 'line-through' : 'none'}}>
+              <li key={toDo.id}>
                 <Checkbox
                   checked={toDo.isCompleted}
                   onChange={e => dispatch(handleCheckTodo(index))}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
-                {titleEdit === true ?
-                  '' :
-                  <div style={{overflow: 'hidden', width: '280px'}}>
-                    {/* <LinesEllipsis
-                      text={toDo.text}
-                      maxLine='2'
-                      ellipsis='...'
-                      trimRight
-                      basedOn='letters'
-                      title={toDo.text}
-                    /> */}
-                    <input className='todo-item' type='text' value={todos.todoLists[todos.currentIndex][index].text} disabled/>
+                {indexVal === index && todoItemEdit === true ?
+                  <div>
+                    <input className='todo-item' type='text' value={todoItem} title={todoItem} onChange={e => setTodoItem(editTasksRef.current[index].value)} ref={el => editTasksRef.current[index] = el} style={{textDecoration: toDo.isCompleted ? 'line-through' : 'none'}}/>
                     <span className='edit'>
-                      <MdModeEdit style={{width: '20px', height: '20px'}} onClick={e => handleEditTodo(e, index)}/>
+                      <MdDone style={{width: '20px', height: '20px'}} onClick={e => handleDoneTodo(index)}/>
                     </span>
+                  </div> :
+                  <div style={{overflow: 'hidden', width: '280px'}}>
+                    <input className='todo-item' type='text' value={todos.todoLists[todos.currentIndex][index].text} title={todos.todoLists[todos.currentIndex][index].text} ref={el => editTasksRef.current[index] = el} disabled style={{textDecoration: toDo.isCompleted ? 'line-through' : 'none'}}/>
+                    {todos.todoLists[todos.currentIndex][index].isCompleted === false  ?
+                      <span className='edit'>
+                        <MdModeEdit style={{width: '20px', height: '20px'}} onClick={e => {
+                          handleEditTodo(e, index)
+                        }}/>
+                      </span> : ''
+                    }
                   </div>
                 }
-                
-                <span className='edit'>
-                  <MdModeEdit onClick={e => handleEditTodo(e, index)} style={{height: '20px', width: '20px'}}/>
-                </span>
                 <span className='delete'>
                   <MdDelete onClick={e => dispatch(deleteTodo(index))} style={{height: '20px', width: '20px'}}/>
                 </span>
@@ -141,7 +169,7 @@ function App() {
       <footer>
         {allCompleted ? 
         <div>
-          {showConfetti && <Confetti width={'1200px'} height={height} style={{alignTracks: 'center'}}/>}
+          {showConfetti && <Confetti width={'1200px'} height={height}/>}
           {hurrayMessage}
         </div>  : ''}
       </footer>

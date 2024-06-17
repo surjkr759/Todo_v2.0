@@ -125,3 +125,10 @@ li {
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
 }
+
+input {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
