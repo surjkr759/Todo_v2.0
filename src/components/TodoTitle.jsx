@@ -4,7 +4,7 @@ import { MdDone, MdModeEdit } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodoTitle, editTodoTitle } from '../store/slice/todoSlice';
 
-const TodoComponent = () => {
+const TodoTitle = () => {
     const dispatch = useDispatch();
     const todos = useSelector(store => store.todos)
     const [titleEdit, setTitleEdit] = useState(false);
@@ -19,14 +19,13 @@ const TodoComponent = () => {
     useEffect(() => {
         if(todos.todoTitle.length < todos.currentIndex)
           dispatch(addTodoTitle(title))
-        // if(todos.todoTitle[todos.currentIndex] !== title)
         setTitle(todos.todoTitle[todos.currentIndex])
     }, [todos, dispatch])
 
     const handleDoneTodoTitle = useCallback(() => {
         dispatch(editTodoTitle(title))
         setTitleEdit(false)
-    }, [dispatch, title])
+    }, [dispatch])
 
     return (
         <div>
@@ -44,4 +43,4 @@ const TodoComponent = () => {
     );
 }
 
-export default TodoComponent;
+export default TodoTitle;
