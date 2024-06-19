@@ -8,12 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import { MdDelete, MdDone, MdModeEdit } from "react-icons/md";
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
+import TodoComponent from './compoenents/TodoComponent';
 
 function App() {
   const dispatch = useDispatch();
   const todos = useSelector(store => store.todos)
   const inputRef = useRef(null)
-  const editTitleRef = useRef(null)
   const editTasksRef = useRef([])
 
   const [todo, setTodo] = useState('');
@@ -22,8 +22,6 @@ function App() {
   const { width, height } = useWindowSize();
   const [hurrayMessage, setHurrayMessage] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
-  const [title, setTitle] = useState('Todo App');
-  const [titleEdit, setTitleEdit] = useState(false);
   const [todoItemEdit, setTodoItemEdit] = useState(false);
   const [todoItem, setTodoItem] = useState('');
   const [indexVal, setIndexVal] = useState(null);
@@ -41,17 +39,7 @@ function App() {
       setShowConfetti(false)
     }
 
-  }, [todos])
-
-  useEffect(() => {
-    if(todos.todoTitle.length < todos.currentIndex)
-      dispatch(addTodoTitle(title))
-    setTitle(todos.todoTitle[todos.currentIndex])
-  }, [todos, dispatch, title])
-
-  useEffect(() => {
-    editTitleRef.current?.focus()
-  }, [titleEdit])
+  }, [todos])  
 
   const checkAllCompleted = useCallback(() => {
     const check = todos.todoLists[todos.currentIndex].filter(t => t.isCompleted === true)
@@ -106,24 +94,11 @@ function App() {
     dispatch(resetTodo())
   }, [dispatch])
 
-  const handleDoneTodoTitle = useCallback(() => {
-    dispatch(editTodoTitle(title))
-    setTitleEdit(false)
-  }, [dispatch, title])
-
 
   return (
     <div className="App">
-      {titleEdit === true ? 
-        <div>
-          <input className='title' type='text' value={title} ref={editTitleRef} onChange={e => setTitle(e.target.value)} />
-          <MdDone style={{width: '25px', height: '25px'}} onClick={handleDoneTodoTitle}/>
-        </div> :
-        <div>
-          <input className='title' type='text' value={title} disabled/> 
-          <MdModeEdit style={{width: '25px', height: '25px'}} onClick={e => setTitleEdit(true)}/>
-        </div>
-      }
+      
+      <TodoComponent />
       
       <br />
       <TextField id="outlined-size-small" label="Enter your todo" size="small" onChange={e => setTodo(e.target.value)} onKeyDown={(e) => {
