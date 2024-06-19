@@ -1,6 +1,7 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import TodoComponent from './components/TodoComponent';
+import AllTodosList from './components/AllTodosList';
 
 function App() {
   const dispatch = useDispatch();
@@ -8,7 +9,13 @@ function App() {
 
   return (
     <div className="App">
-      <TodoComponent />
+      <div className='todo-frame'>
+        <TodoComponent />
+      </div>
+      <div id='todoLists'>
+        <AllTodosList />
+      </div>
+      
     </div>
   );
 }

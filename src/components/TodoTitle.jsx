@@ -17,15 +17,16 @@ const TodoTitle = () => {
     }, [titleEdit])
 
     useEffect(() => {
-        if(todos.todoTitle.length < todos.currentIndex)
-          dispatch(addTodoTitle(title))
+        if(todos.todoTitle.length <= todos.currentIndex)
+          dispatch(addTodoTitle({t: 'Todo App', arr: []}))
         setTitle(todos.todoTitle[todos.currentIndex])
     }, [todos, dispatch])
+
 
     const handleDoneTodoTitle = useCallback(() => {
         dispatch(editTodoTitle(title))
         setTitleEdit(false)
-    }, [dispatch])
+    }, [dispatch, title])
 
     return (
         <div>

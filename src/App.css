@@ -1,6 +1,20 @@
 .App {
-  text-align: center;
+  display: flex;
   position: relative;
+}
+
+.todo-frame {
+  text-align: center;
+  /* position: relative; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+
+#todoLists {
+  width: 250px;
 }
 
 .App-logo {
@@ -98,8 +112,8 @@ footer {
   justify-content:flex-start;
   margin: 70px 20px 40px 40px;
   position: fixed;
-  bottom: 40px;
-  left: 10px;
+  bottom: 0px;
+  left: 0px;
 }
 
 li {

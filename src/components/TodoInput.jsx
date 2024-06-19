@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { addToDo } from '../store/slice/todoSlice';
+import { addToDoItem } from '../store/slice/todoSlice';
 
 const TodoInput = () => {
     const [todo, setTodo] = useState('');
@@ -17,7 +17,7 @@ const TodoInput = () => {
     const handleItemClick = useCallback(() => {
         if(todo.trim() !== '') {
           if(checkDupTodo()) {
-            dispatch(addToDo({id: Date.now(), text: todo.replace(/\s+/g,' ').trim(), isCompleted: false}))
+            dispatch(addToDoItem({id: Date.now(), text: todo.replace(/\s+/g,' ').trim(), isCompleted: false}))
             setTodo('')
           } else {
             alert(todo.trim() + ' is already present')

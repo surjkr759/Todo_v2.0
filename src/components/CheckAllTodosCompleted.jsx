@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
-import { resetTodo } from '../store/slice/todoSlice';
+import { createNewTodoList } from '../store/slice/todoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 
@@ -15,15 +15,17 @@ const CheckAllTodosCompleted = () => {
     const [showConfetti, setShowConfetti] = useState(false);
 
     useEffect(() => {
-        if(checkAllCompleted()) {
-          setAllCompleted(true)
-          setHurrayMessage('Hurray!! All todos completed')
-          setShowConfetti(true)
-        }
-        else {
-          setAllCompleted(false)
-          setHurrayMessage('')
-          setShowConfetti(false)
+        if(todos.todoLists.length !== todos.currentIndex) {
+            if(checkAllCompleted()) {
+                setAllCompleted(true)
+                setHurrayMessage('Hurray!! All todos completed')
+                setShowConfetti(true)
+            }
+            else {
+                setAllCompleted(false)
+                setHurrayMessage('')
+                setShowConfetti(false)
+            }
         }
     }, [todos])
 
@@ -37,7 +39,7 @@ const CheckAllTodosCompleted = () => {
     const reset = useCallback(() => {
         setHurrayMessage('')
         setShowConfetti(false)
-        dispatch(resetTodo())
+        dispatch(createNewTodoList())
     }, [dispatch])
 
     return (
@@ -45,12 +47,12 @@ const CheckAllTodosCompleted = () => {
             <footer>
                 {allCompleted ? 
                 <div>
-                    {showConfetti && <Confetti width={width} height={height}/>}
+                    {showConfetti && <Confetti width={'1200px'} height={height}/>}
                     {hurrayMessage}
                 </div>  : ''}
             </footer>
             <div id='newTodo'>
-                <Button variant="outlined" onClick={reset}>Create new Todo List</Button>
+                <Button variant="contained" onClick={reset}>Create new Todo List</Button>
             </div>
         </div>
     )

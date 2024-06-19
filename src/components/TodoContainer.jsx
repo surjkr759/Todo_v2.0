@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Checkbox from '@mui/material/Checkbox';
-import { handleCheckTodo, editTodoItems, deleteTodo } from '../store/slice/todoSlice';
+import { handleCheckTodo, editTodoItems, deleteTodoItem } from '../store/slice/todoSlice';
 import { useCallback, useRef, useState } from 'react';
 import { MdDelete, MdDone, MdModeEdit } from "react-icons/md";
 
@@ -33,6 +33,7 @@ const TodoContainer = () => {
 
     return (
         <div>
+            {todos.todoLists.length === todos.currentIndex ? '' : 
             <div id='parentTodoContainer'>
                 <div id='todoContainer'>
                     <ul>
@@ -62,13 +63,13 @@ const TodoContainer = () => {
                                     </div>
                                 }
                                 <span className='delete'>
-                                    <MdDelete onClick={e => dispatch(deleteTodo(index))} style={{ height: '20px', width: '20px' }} />
+                                    <MdDelete onClick={e => dispatch(deleteTodoItem(index))} style={{ height: '20px', width: '20px' }} />
                                 </span>
                             </li>)
                         }
                     </ul>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }
