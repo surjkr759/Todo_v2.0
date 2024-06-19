@@ -52,6 +52,11 @@
             state.currentIndex = state.currentIndex + 1
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
+        },
+        todoCurrentSelection: (state, action) => {
+            state.currentIndex = action.payload
+            localStorage.setItem('todos', JSON.stringify(state))
+            return state;
         }
         // resetTodo: (state) => { 
         //     state.length = 0;
@@ -64,5 +69,5 @@
     }
   })
 
-  export const { addToDoItem, handleCheckTodo, deleteTodoItem, createNewTodoList, addTodoTitle, editTodoTitle, editTodoItems, deleteTodo } = todoSlice.actions 
+  export const { addToDoItem, handleCheckTodo, deleteTodoItem, createNewTodoList, addTodoTitle, editTodoTitle, editTodoItems, deleteTodo, todoCurrentSelection } = todoSlice.actions 
   export default todoSlice.reducer

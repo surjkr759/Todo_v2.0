@@ -8,14 +8,8 @@ function App() {
   const todos = useSelector(store => store.todos)
 
   return (
-    <div className="App">
-      <div className='todo-frame'>
-        <TodoComponent />
-      </div>
-      <div id='todoLists'>
-        <AllTodosList />
-      </div>
-      
+    <div>
+      <AllTodosList />
     </div>
   );
 }
