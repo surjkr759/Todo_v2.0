@@ -5,10 +5,9 @@ import { addToDo, handleCheckTodo, deleteTodo, resetTodo, addTodoTitle, editTodo
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import { MdDelete, MdDone, MdOutlineCancel, MdModeEdit } from "react-icons/md";
+import { MdDelete, MdDone, MdModeEdit } from "react-icons/md";
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
-import LinesEllipsis from 'react-lines-ellipsis'
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ function App() {
   const editTasksRef = useRef([])
 
   const [todo, setTodo] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   const [allCompleted, setAllCompleted] = useState(false);
   const { width, height } = useWindowSize();
   const [hurrayMessage, setHurrayMessage] = useState('');
@@ -48,7 +47,7 @@ function App() {
     if(todos.todoTitle.length < todos.currentIndex)
       dispatch(addTodoTitle(title))
     setTitle(todos.todoTitle[todos.currentIndex])
-  }, [todos.currentIndex])
+  }, [todos, dispatch, title])
 
   useEffect(() => {
     editTitleRef.current?.focus()
@@ -77,7 +76,7 @@ function App() {
     if(check.length === todos.todoLists[todos.currentIndex].length)
       return true
     return false
-  }, [todo])
+  }, [todos, todo])
 
   const handleEditTodo = useCallback((e, index) => {
     if(!todoItemEdit) {
@@ -91,21 +90,21 @@ function App() {
       }, 0)
       
     } else alert('Please save one todo item before editing another')
-  }, [todoItem, todoItemEdit])
+  }, [todos, todoItemEdit])
 
   const handleDoneTodo = useCallback((index) => {
     dispatch(editTodoItems({ind: index, val: todoItem}))
     setTodoItemEdit(false)
     setIndexVal(null)
     setTodoItem('')
-  }, [todoItem, todoItemEdit])
+  }, [dispatch, todoItem])
 
 
   const reset = useCallback(() => {
     setHurrayMessage('')
     setShowConfetti(false)
     dispatch(resetTodo())
-  }, [todos])
+  }, [dispatch])
 
   const handleDoneTodoTitle = useCallback(() => {
     dispatch(editTodoTitle(title))
@@ -169,7 +168,7 @@ function App() {
       <footer>
         {allCompleted ? 
         <div>
-          {showConfetti && <Confetti width={'1200px'} height={height}/>}
+          {showConfetti && <Confetti width={width} height={height}/>}
           {hurrayMessage}
         </div>  : ''}
       </footer>
