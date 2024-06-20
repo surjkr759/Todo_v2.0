@@ -26,8 +26,8 @@ const TodoInput = () => {
       }, [dispatch, todo])
 
     const checkDupTodo = useCallback(() => {
-        const check = todos.todoLists[todos.currentIndex].filter(t => t.text !== todo)
-        if(check.length === todos.todoLists[todos.currentIndex].length)
+        const check = todos?.todoLists[todos?.currentIndex].filter(t => t.text !== todo)
+        if(check.length === todos?.todoLists[todos?.currentIndex].length)
             return true
         return false
     }, [todos, todo])

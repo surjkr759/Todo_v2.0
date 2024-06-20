@@ -17,9 +17,9 @@ const TodoTitle = () => {
     }, [titleEdit])
 
     useEffect(() => {
-        if(todos.todoTitle.length <= todos.currentIndex)
+        if(todos?.todoTitle.length === 0)
           dispatch(addTodoTitle({t: 'Todo App', arr: []}))
-        setTitle(todos.todoTitle[todos.currentIndex])
+        setTitle(todos?.todoTitle[todos?.currentIndex])
     }, [todos, dispatch])
 
 

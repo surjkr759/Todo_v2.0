@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
-import { createNewTodoList } from '../store/slice/todoSlice';
+import { createNewTodoList, addTodoTitle } from '../store/slice/todoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 
@@ -30,8 +30,8 @@ const CheckAllTodosCompleted = () => {
     }, [todos])
 
     const checkAllCompleted = useCallback(() => {
-        const check = todos.todoLists[todos.currentIndex].filter(t => t.isCompleted === true)
-        if(todos.todoLists[todos.currentIndex].length > 0 && check.length === todos.todoLists[todos.currentIndex].length) 
+        const check = todos?.todoLists[todos?.currentIndex]?.filter(t => t.isCompleted === true)
+        if(todos?.todoLists[todos?.currentIndex]?.length > 0 && check.length === todos?.todoLists[todos?.currentIndex]?.length) 
           return true
         return false
     }, [todos])
@@ -39,6 +39,7 @@ const CheckAllTodosCompleted = () => {
     const reset = useCallback(() => {
         setHurrayMessage('')
         setShowConfetti(false)
+        dispatch(addTodoTitle({t: 'Todo App', arr: []}))
         dispatch(createNewTodoList())
     }, [dispatch])
 
@@ -47,7 +48,7 @@ const CheckAllTodosCompleted = () => {
             <footer>
                 {allCompleted ? 
                 <div>
-                    {showConfetti && <Confetti width={'1200px'} height={height}/>}
+                    {showConfetti && <Confetti confettiSource = {{w: 900, x: 500}} height={height}/>}
                     {hurrayMessage}
                 </div>  : ''}
             </footer>

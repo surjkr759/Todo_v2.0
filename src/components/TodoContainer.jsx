@@ -23,7 +23,7 @@ const TodoContainer = () => {
     const handleEditTodo = useCallback((e, index) => {
         if(!todoItemEdit) {
           setIndexVal(index)
-          setTodoItem(todos.todoLists[todos.currentIndex][index].text)
+          setTodoItem(todos?.todoLists[todos?.currentIndex][index].text)
           setTodoItemEdit(true)
           setTimeout(() => {
             editTasksRef.current[index].focus()
@@ -33,11 +33,11 @@ const TodoContainer = () => {
 
     return (
         <div>
-            {todos.todoLists.length === todos.currentIndex ? '' : 
+            {/* {todos?.todoLists.length === todos?.currentIndex ? '' :  */}
             <div id='parentTodoContainer'>
                 <div id='todoContainer'>
                     <ul>
-                        {todos.todoLists[todos.currentIndex].map((toDo, index) =>
+                        {todos?.todoLists[todos?.currentIndex]?.map((toDo, index) =>
                             <li key={toDo.id}>
                                 <Checkbox
                                     checked={toDo.isCompleted}
@@ -52,8 +52,8 @@ const TodoContainer = () => {
                                         </span>
                                     </div> :
                                     <div style={{ overflow: 'hidden', width: '280px' }}>
-                                        <input className='todo-item' type='text' value={todos.todoLists[todos.currentIndex][index].text} title={todos.todoLists[todos.currentIndex][index].text} ref={el => editTasksRef.current[index] = el} disabled style={{ textDecoration: toDo.isCompleted ? 'line-through' : 'none' }} />
-                                        {todos.todoLists[todos.currentIndex][index].isCompleted === false ?
+                                        <input className='todo-item' type='text' value={todos?.todoLists[todos?.currentIndex][index]?.text} title={todos?.todoLists[todos?.currentIndex][index]?.text} ref={el => editTasksRef.current[index] = el} disabled style={{ textDecoration: toDo.isCompleted ? 'line-through' : 'none' }} />
+                                        {todos?.todoLists[todos?.currentIndex][index].isCompleted === false ?
                                             <span className='edit'>
                                                 <MdModeEdit style={{ width: '20px', height: '20px' }} onClick={e => {
                                                     handleEditTodo(e, index)
@@ -69,7 +69,7 @@ const TodoContainer = () => {
                         }
                     </ul>
                 </div>
-            </div>}
+            </div>
         </div>
     )
 }

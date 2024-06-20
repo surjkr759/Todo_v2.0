@@ -4,8 +4,8 @@
     name: 'todos',
     initialState: localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : {
         currentIndex: 0,
-        todoTitle: [],
-        todoLists: []
+        todoTitle: ['Todo App'],
+        todoLists: [[]],
     },
     reducers: {
         addToDoItem: (state, action) => {
@@ -24,8 +24,10 @@
             return state;
         },
         addTodoTitle: (state, action) => {
-            state.todoTitle.push(action.payload. t)
-            state.todoLists.push(action.payload.arr)
+            console.log('Hi')
+            const payload = {t: 'Todo App', arr: []}
+            state.todoTitle.push(payload. t)
+            state.todoLists.push(payload.arr)
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
@@ -40,20 +42,22 @@
             return state;
         },
         deleteTodo: (state, action) => {
-            console.log('Current Index', state.currentIndex)
+            console.log('Current Index1', state.currentIndex)
             if(state.todoTitle.length > 1)
-                state.currentIndex = state.currentIndex - 1
+                state.currentIndex = state.todoTitle.length - 2
+            console.log('Current Index2', state.currentIndex)
             state.todoTitle.splice(action.payload, 1)
             state.todoLists.splice(action.payload, 1)
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
         createNewTodoList: (state, action) => {
-            state.currentIndex = state.currentIndex + 1
+            state.currentIndex = state.todoTitle.length - 1
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
         todoCurrentSelection: (state, action) => {
+            // console.log('Current selection', action.payload)
             state.currentIndex = action.payload
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
