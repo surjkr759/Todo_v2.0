@@ -25,9 +25,13 @@ const AllTodosList = () => {
     
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
-                <ListItemButton selected={selectedIndex === index} onClick={e => dispatch(todoCurrentSelection(index))}>
-                    <ListItemText primary={todos?.todoTitle[`${index}`]} />
-                    <MdDelete onClick={e => dispatch(deleteTodo(index))} style={{ height: '20px', width: '20px' }} />
+                <ListItemButton selected={selectedIndex === index} >
+                    <ListItemText primary={todos?.todoTitle[`${index}`]} onClick={e => dispatch(todoCurrentSelection(index))} />
+                    <MdDelete onClick={e => {
+                        dispatch(deleteTodo(index))
+                        console.log('Selected index after delete', todos?.currentIndex)
+                        // setSelectedIndex(todos?.currentIndex);
+                    }} style={{ height: '20px', width: '20px' }} />
                 </ListItemButton>
             </ListItem>
         )

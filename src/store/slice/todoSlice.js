@@ -24,7 +24,6 @@
             return state;
         },
         addTodoTitle: (state, action) => {
-            console.log('Hi')
             const payload = {t: 'Todo App', arr: []}
             state.todoTitle.push(payload. t)
             state.todoLists.push(payload.arr)
@@ -42,12 +41,10 @@
             return state;
         },
         deleteTodo: (state, action) => {
-            console.log('Current Index1', state.currentIndex)
-            if(state.todoTitle.length > 1)
-                state.currentIndex = state.todoTitle.length - 2
-            console.log('Current Index2', state.currentIndex)
             state.todoTitle.splice(action.payload, 1)
             state.todoLists.splice(action.payload, 1)
+            if(state.todoTitle.length > 0)
+                state.currentIndex = state.todoTitle.length - 1
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         },
@@ -57,19 +54,10 @@
             return state;
         },
         todoCurrentSelection: (state, action) => {
-            // console.log('Current selection', action.payload)
             state.currentIndex = action.payload
             localStorage.setItem('todos', JSON.stringify(state))
             return state;
         }
-        // resetTodo: (state) => { 
-        //     state.length = 0;
-        //     localStorage.setItem('todos', JSON.stringify(state))
-        //     return state
-        // }
-        // updateTodo: (state, action) => {
-
-        // }
     }
   })
 
